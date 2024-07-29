@@ -26,6 +26,11 @@ namespace FrankfurterTest.Endpoints
 
             gr.MapPut("/update", UpdateRatesFR);
 
+            gr.MapGet("/currency/{baseCurrency}", GetRatesByBaseCurrency);
+            gr.MapPut("/currency/{baseCurrency}", UpdateRatesByBaseCurrency);
+            gr.MapDelete("/currency/{baseCurrency}", DeleteRatesByBaseCurrency);
+
+            gr.MapGet("/average", GetAverageRates);
             return gr;
         }
 
@@ -139,6 +144,69 @@ namespace FrankfurterTest.Endpoints
             await context.SaveChangesAsync();
 
             return Results.Ok(exchangeRate);
+        }
+
+        static async Task<IResult> GetRatesByBaseCurrency(string baseCurrency,
+            IRepositoryExchangeRates repo, IMapper mapper)
+        {
+            var exchangeRates = await repo.GetByBaseCurrency(baseCurrency);
+            return Results.Ok(exchangeRates);
+        }
+
+        static async Task<IResult> UpdateRatesByBaseCurrency(string baseCurrency,
+            IRepositoryExchangeRates repo,
+            List<ExchangeRateDTO> rateDTOs, ApplicationDbContext context)
+        {
+            var baseCurrencyEntity = await context.Currencies.
+                FirstOrDefaultAsync(c => c.Symbol == baseCurrency);   
+
+            if(baseCurrencyEntity == null)
+            {
+                return Results.Problem($"Base Currency {baseCurrency} Not Found.");
+            }
+
+            var exchangeRates = rateDTOs.Select(dto => new ExchangeRate
+            {
+                BaseCurrencyId = baseCurrencyEntity.Id,
+                TargetCurrencyId = dto.TargetCurrencyId,
+                Rate = dto.Rate,
+                Date = dto.Date
+            }).ToList();
+
+            await repo.UpdateByBaseCurrency(baseCurrency, exchangeRates);
+            return Results.NoContent();
+
+        }
+
+        static async Task<IResult> DeleteRatesByBaseCurrency(string baseCurrency,
+            IRepositoryExchangeRates repo)
+        {
+            await repo.DeleteByBaseCurrency(baseCurrency);
+            return Results.NoContent();
+        }
+
+        static async Task<IResult> GetAverageRates(FrankfurterService frService,
+            IRepositoryExchangeRates repo,
+            string baseCurrency, string targetCurrency, DateTime start, DateTime end)
+        {
+            var exchangeRateResponse = await frService.GetExchangeRatesInRangeAsync(baseCurrency, targetCurrency, start, end);
+
+            if (exchangeRateResponse?.Rates == null || !exchangeRateResponse.Rates.Any())
+            {
+                return Results.NotFound("No Exchange Rates Found");
+            }
+
+            var rates = exchangeRateResponse.Rates
+                .SelectMany(day => day.Value.ContainsKey(targetCurrency) ? new[] { day.Value[targetCurrency] } : Array.Empty<decimal>())
+                .ToList();
+
+            if (!rates.Any())
+            {
+                return Results.NotFound("No Valid Exchange Rates found");
+            }
+
+            var averageRate = rates.Average();
+            return Results.Ok(averageRate);
         }
 
     }

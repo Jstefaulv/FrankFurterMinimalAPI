@@ -1,7 +1,9 @@
 ﻿using FrankfurterTest.DTOs;
 using FrankfurterTest.Entities;
+using FrankfurterTest.Services;
 using FrankfurterTest.Utility;
 using Microsoft.EntityFrameworkCore;
+using System.Formats.Tar;
 
 namespace FrankfurterTest.Repositories
 {
@@ -50,14 +52,6 @@ namespace FrankfurterTest.Repositories
             }
         }
 
-        public async Task<List<ExchangeRate>> GetByBaseCurrency(int baseCurrencyId)
-        {
-            return await context.ExchangesRates
-                .Include(e => e.BaseCurrency)
-                .Include(e => e.TargetCurrency)
-                .Where(e => e.BaseCurrencyId == baseCurrencyId)
-                .ToListAsync();
-        }
 
         public async Task<int> CreateExchangeRate(ExchangeRate rate)
         {
@@ -65,6 +59,55 @@ namespace FrankfurterTest.Repositories
             await context.SaveChangesAsync();
             return rate.Id;
         }
+
+        public async Task<List<ExchangeRate>> GetByBaseCurrency(string baseCurrencySymbol)
+        {
+            return await context.ExchangesRates
+                .Include(e => e.BaseCurrency)
+                .Include(e => e.TargetCurrency)
+                .Where(e => e.BaseCurrency.Symbol == baseCurrencySymbol)
+                .ToListAsync();      
+        }
+
+        public async Task UpdateByBaseCurrency(string baseCurrencySymbol, List<ExchangeRate> exchangeRates)
+        {
+            var existingRates = await context.ExchangesRates
+                 .Where(e => e.BaseCurrency.Symbol == baseCurrencySymbol)
+                 .ToListAsync();
+
+            context.ExchangesRates.RemoveRange(existingRates);
+            context.ExchangesRates.AddRange(exchangeRates);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task DeleteByBaseCurrency(string baseCurrencySymbol)
+        {
+            var exchangeRates = await context.ExchangesRates
+                .Where(e => e.BaseCurrency.Symbol == baseCurrencySymbol)
+                .ToListAsync();
+
+            context.ExchangesRates.RemoveRange(exchangeRates);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<decimal?> GetAverageRate(string baseCurrencySymbol, 
+            string targetCurrencySymbol, DateTime startDate, DateTime endDate)
+        {
+            var rates = await context.ExchangesRates
+                .Where(e => e.BaseCurrency.Symbol == baseCurrencySymbol
+                && e.TargetCurrency.Symbol == targetCurrencySymbol
+                && e.Date >= startDate && e.Date <= endDate)
+                .ToListAsync();
+
+            if (!rates.Any())
+            {
+                return null;
+            }
+
+            return rates.Average(e => e.Rate);
+                
+        }
+
 
     }
 }

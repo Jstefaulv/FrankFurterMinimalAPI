@@ -10,7 +10,16 @@ namespace FrankfurterTest.Repositories
         Task<ExchangeRate?> GetById(int id);
         Task Update(ExchangeRate exchangeRate);
         Task Delete(int id);
-        Task<List<ExchangeRate>> GetByBaseCurrency(int baseCurrencyId);
+
+        #region ByBasecurrency
+        Task<List<ExchangeRate>> GetByBaseCurrency(string baseCurrencySymbol);
+        Task UpdateByBaseCurrency(string baseCurrencySymbol, List<ExchangeRate> exchangeRates);
+        Task DeleteByBaseCurrency(string baseCurrencySymbol);
+        #endregion ByBaseCurrency
+
+        Task<decimal?> GetAverageRate(string baseCurrencySymbol,
+            string targetCurrencySymbol, DateTime startDate,
+            DateTime endDate);
 
     }
 }
