@@ -50,8 +50,6 @@ namespace FrankfurterTest.Endpoints
             var rateDTO = mapper.Map<ExchangeRateDTO>(rate);
 
             return TypedResults.Created($"/rates/{id}", rateDTO);
-
-
         }
 
     }
