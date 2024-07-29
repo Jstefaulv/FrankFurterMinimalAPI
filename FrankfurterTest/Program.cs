@@ -28,6 +28,12 @@ builder.Services.AddScoped<IRepositoryExchangeRates, ExchangeRatesRepository>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddHttpClient<FrankfurterService>();
+
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.ReferenceHandler = 
+    System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
 #endregion Services
 
 var app = builder.Build();

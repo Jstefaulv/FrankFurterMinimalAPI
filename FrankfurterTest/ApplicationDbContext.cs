@@ -17,6 +17,7 @@ namespace FrankfurterTest
             modelBuilder.Entity<Currency>().Property(p => p.Name).HasMaxLength(20);
 
             #region RelationOne-Many Currency-ExchangeRate
+            
             modelBuilder.Entity<Currency>(entity =>
             {
                 entity.Property(p => p.Symbol).IsRequired().HasMaxLength(10);

@@ -137,3 +137,4 @@ C:\Users\Johana\source\repos\FrankfurterTest\FrankfurterTest\bin\Debug\net8.0\Sw
 C:\Users\Johana\source\repos\FrankfurterTest\FrankfurterTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Johana\source\repos\FrankfurterTest\FrankfurterTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Johana\source\repos\FrankfurterTest\FrankfurterTest\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Johana\source\repos\FrankfurterTest\FrankfurterTest\obj\Debug\net8.0\FrankfurterTest.sourcelink.json

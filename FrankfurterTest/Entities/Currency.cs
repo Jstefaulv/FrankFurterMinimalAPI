@@ -1,4 +1,6 @@
-﻿namespace FrankfurterTest.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace FrankfurterTest.Entities
 {
     public class Currency
     {
@@ -6,7 +8,9 @@
         public string Symbol { get; set; } = null!;
         public string Name { get; set; } = null!;
 
+        [JsonIgnore]
         public List<ExchangeRate> BaseExchangeRates { get; set; } = null!;
-       public List<ExchangeRate> TargetExchangeRates { get; set; } = null!;
+        [JsonIgnore]
+        public List<ExchangeRate> TargetExchangeRates { get; set; } = null!;
     }
 }
