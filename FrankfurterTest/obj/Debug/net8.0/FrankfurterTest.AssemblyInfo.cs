@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FrankfurterTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+077717b4b92698cc99f4aea0e580ffe39315cd27")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3337f09c1a51523b6eafacae356f26115b575b6d")]
 [assembly: System.Reflection.AssemblyProductAttribute("FrankfurterTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FrankfurterTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,6 +4,7 @@ using FrankfurterTest.Entities;
 using FrankfurterTest.Repositories;
 using FrankfurterTest.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,11 +27,15 @@ namespace FrankfurterTest.Endpoints
 
             gr.MapPut("/update", UpdateRatesFR);
 
-            gr.MapGet("/currency/{baseCurrency}", GetRatesByBaseCurrency);
+            gr.MapGet("/currency/{baseCurrency}", GetRatesByBaseCurrency)
+                 .CacheOutput(c => c.Expire(TimeSpan.FromSeconds(15)).Tag("rates-get"));
             gr.MapPut("/currency/{baseCurrency}", UpdateRatesByBaseCurrency);
             gr.MapDelete("/currency/{baseCurrency}", DeleteRatesByBaseCurrency);
 
-            gr.MapGet("/average", GetAverageRates);
+            gr.MapGet("/average", GetAverageRates)
+                 .CacheOutput(c => c.Expire(TimeSpan.FromSeconds(15)).Tag("rates-get"));
+            gr.MapGet("/minmax", GetMinMaxExchangeRate)
+                .CacheOutput(c => c.Expire(TimeSpan.FromSeconds(15)).Tag("rates-get"));
             return gr;
         }
 
@@ -202,11 +207,36 @@ namespace FrankfurterTest.Endpoints
 
             if (!rates.Any())
             {
-                return Results.NotFound("No Valid Exchange Rates found");
+                return Results.NotFound("No Valid Exchange Rates Found");
             }
 
             var averageRate = rates.Average();
             return Results.Ok(averageRate);
+        }
+
+        public static async Task<IResult> GetMinMaxExchangeRate(FrankfurterService frService,
+            string baseCurrency, string targetCurrency, DateTime startDate, DateTime endDate)
+        {
+            var exchangeRateResponse = await frService.GetExchangeRatesInRangeAsync(baseCurrency, targetCurrency, startDate, endDate);
+
+            if (exchangeRateResponse?.Rates == null || !exchangeRateResponse.Rates.Any())
+            {
+                return Results.NotFound("No Exchange Rates Found");
+            }
+
+            var rates = exchangeRateResponse.Rates
+                .SelectMany(day => day.Value.ContainsKey(targetCurrency) ? new[] { day.Value[targetCurrency] } : Array.Empty<decimal>())
+                .ToList();
+
+            if (!rates.Any())
+            {
+                return Results.NotFound("No Valid Exchange Rates Found.");
+            }
+
+            var minRate = rates.Min();
+            var maxRate = rates.Max();
+
+            return Results.Ok(new { MinRate = minRate, MaxRate = maxRate });
         }
 
     }
