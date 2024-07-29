@@ -51,6 +51,7 @@ namespace FrankfurterTest.Endpoints
 
             return TypedResults.Created($"/rates/{id}", rateDTO);
 
+
         }
 
     }
