@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Johana\\source\\repos\\FrankfurterTest\\FrankfurterTest\\FrankfurterTest.csproj": {}
+    "C:\\Users\\johan\\OneDrive\\Documentos\\projects\\FrankfurterMinimalAPI\\FrankfurterTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Johana\\source\\repos\\FrankfurterTest\\FrankfurterTest\\FrankfurterTest.csproj": {
+    "C:\\Users\\johan\\OneDrive\\Documentos\\projects\\FrankfurterMinimalAPI\\FrankfurterTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Johana\\source\\repos\\FrankfurterTest\\FrankfurterTest\\FrankfurterTest.csproj",
+        "projectUniqueName": "C:\\Users\\johan\\OneDrive\\Documentos\\projects\\FrankfurterMinimalAPI\\FrankfurterTest.csproj",
         "projectName": "FrankfurterTest",
-        "projectPath": "C:\\Users\\Johana\\source\\repos\\FrankfurterTest\\FrankfurterTest\\FrankfurterTest.csproj",
-        "packagesPath": "C:\\Users\\Johana\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Johana\\source\\repos\\FrankfurterTest\\FrankfurterTest\\obj\\",
+        "projectPath": "C:\\Users\\johan\\OneDrive\\Documentos\\projects\\FrankfurterMinimalAPI\\FrankfurterTest.csproj",
+        "packagesPath": "C:\\Users\\johan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\johan\\OneDrive\\Documentos\\projects\\FrankfurterMinimalAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Johana\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\johan\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -35,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -84,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.121/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

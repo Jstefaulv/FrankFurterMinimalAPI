@@ -53,6 +53,7 @@ app.UseOutputCache();
 #region endpoints
 app.MapGroup("/currencies").MapCurrencies();
 app.MapGroup("/rates").MapExchangeRates();
+app.MapGet("/", () => "Hola");
 
 
 
